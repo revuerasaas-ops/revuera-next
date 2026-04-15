@@ -1,0 +1,53 @@
+# Revuera — Full Documentation for AI Models
+
+## What is Revuera?
+Revuera is an Australian SaaS product that automates Google review collection for small businesses. It uses smart filtering to route happy customers to Google Reviews and keep negative feedback private.
+
+## How it works
+1. A customer makes a purchase or visits a business
+2. Revuera sends them a review request (SMS or review funnel link)
+3. Customer rates their experience 1–5
+4. If 4–5★: they're sent to leave a public Google review
+5. If 1–3★: they're asked for private feedback that only the business sees
+
+## Plans and Pricing
+
+### Starter — SMS Reviews
+Price: $19/month or $15/month (billed $180/year)
+For: Service businesses (plumbers, electricians, salons, clinics, restaurants, mechanics)
+How: Customer receives SMS → replies with star rating → directed to Google or private feedback
+
+### Ecommerce — Review Funnel
+Price: $9/month or $7/month (billed $84/year)
+For: Online stores (Shopify, WooCommerce, BigCommerce, Square)
+How: Order webhook → delayed SMS after delivery → or branded funnel page link
+
+Both plans: 7-day free trial, no credit card required
+
+## Target Market
+- Australian small businesses
+- Service businesses with regular customers (trades, health, hospitality)
+- Ecommerce stores wanting more Google reviews
+- Businesses worried about fake or retaliatory reviews
+
+## Competitive Advantage
+- Smart filtering (competitors send all customers to Google — Revuera filters)
+- Australian-built, Australian pricing, Australian phone numbers
+- No per-SMS charges above plan limit (flat fee)
+- 7-day SMS delay for ecommerce (review after product received)
+
+## Technical Stack
+- Frontend: Next.js 14, TypeScript, Tailwind CSS, deployed on Vercel
+- Backend: Cloudflare Workers (edge, no cold starts)
+- Database: Supabase (PostgreSQL)
+- SMS: Twilio (Australian numbers)
+- Email: Resend
+- Payments: Stripe (with 7-day trial)
+- Auth: Session tokens (PBKDF2, SHA-256 hashed)
+
+## Company
+Revuera Pty Ltd
+ABN: 23 308 272 266
+Sydney, Australia
+hello@revuera.com.au
+https://revuera.com.au

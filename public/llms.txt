@@ -1,0 +1,49 @@
+# Revuera
+> Turn happy customers into 5-star Google reviews — automatically.
+
+Revuera is an Australian SaaS that helps small businesses collect Google reviews through smart filtering. Unhappy customers (1–3★) get routed to private feedback; happy customers (4–5★) are sent directly to Google to leave a public review.
+
+## Products
+
+### Starter Plan ($19/mo or $15/mo annual)
+SMS-based review collection for service businesses (trades, salons, clinics, restaurants).
+- Customer receives an SMS after their visit
+- Replies with a star rating (1–5)
+- 4–5★: sent a link to leave a Google review
+- 1–3★: asked for private feedback (never goes to Google)
+- Dashboard: customer history, feedback inbox, CSV export
+
+### Ecommerce Plan ($9/mo or $7/mo annual)
+Review funnel page for online stores. No SMS required.
+- Webhook integration with Shopify, WooCommerce, BigCommerce, Square
+- 7-day delay after purchase before review request
+- Branded funnel page (logo, colour, custom copy)
+- QR code / direct link / post-checkout redirect
+- Dashboard: funnel visits, positive/negative split, private feedback
+
+## Key Features
+- Smart filtering: negative feedback stays private
+- Australian phone number normalisation
+- PBKDF2 password hashing, session token auth
+- Stripe billing with 7-day free trial
+- Twilio SMS (AU numbers)
+- Resend transactional email
+- Built on Cloudflare Workers + Supabase
+
+## Business
+- Company: Revuera Pty Ltd
+- ABN: 23 308 272 266
+- Country: Australia (Sydney)
+- Website: https://revuera.com.au
+- Contact: hello@revuera.com.au
+
+## Pages
+- Homepage: https://revuera.com.au
+- Pricing: https://revuera.com.au/pricing
+- SMS Reviews product: https://revuera.com.au/sms-reviews
+- Review Funnel product: https://revuera.com.au/review-funnel
+- Blog: https://revuera.com.au/blog
+- FAQ: https://revuera.com.au/faq
+- Contact: https://revuera.com.au/contact
+- Privacy Policy: https://revuera.com.au/privacy
+- Terms: https://revuera.com.au/terms
