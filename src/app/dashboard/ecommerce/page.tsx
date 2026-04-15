@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+
+import { useState, Suspense, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LayoutDashboard, Plug, Activity, MessageSquare, Settings, Palette, ShoppingCart, Link as LinkIcon } from "lucide-react";
 import { motion } from "framer-motion";
@@ -25,7 +26,7 @@ const TABS: DashboardTab[] = [
   { id: "settings", label: "Settings", icon: Settings },
 ];
 
-export default function EcommerceDashboard() {
+function EcommerceDashboardInner() {
   const router = useRouter();
   const { user, isLoading: authLoading, isAuthenticated, updateUser } = useAuth();
   const { toast } = useToast();
@@ -222,5 +223,13 @@ export default function EcommerceDashboard() {
       {activeTab === "feedback" && <EcomFeedbackTab />}
       {activeTab === "settings" && <EcomSettingsTab onNavigateToTab={setActiveTab} />}
     </DashboardLayout>
+  );
+}
+
+export default function EcommerceDashboard() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-sand flex items-center justify-center"><div className="w-8 h-8 border-2 border-brand-600 border-t-transparent rounded-full animate-spin" /></div>}>
+      <EcommerceDashboardInner />
+    </Suspense>
   );
 }

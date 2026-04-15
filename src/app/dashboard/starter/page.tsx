@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+
+import { useState, Suspense, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LayoutDashboard, Clock, MessageCircle, Settings, MessageSquare, UserPlus } from "lucide-react";
 import { motion } from "framer-motion";
@@ -23,7 +24,7 @@ const TABS: DashboardTab[] = [
 
 type CustomerRecord = { id: string; fields: Record<string, unknown>; createdTime: string };
 
-export default function StarterDashboard() {
+function StarterDashboardInner() {
   const router = useRouter();
   const { user, isLoading: authLoading, isAuthenticated, updateUser } = useAuth();
   const { toast } = useToast();
@@ -239,5 +240,13 @@ export default function StarterDashboard() {
       {activeTab === "feedback" && <FeedbackTab customers={customers} loading={loading} />}
       {activeTab === "settings" && <SettingsTab onRefresh={loadCustomers} />}
     </DashboardLayout>
+  );
+}
+
+export default function StarterDashboard() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-sand flex items-center justify-center"><div className="w-8 h-8 border-2 border-brand-600 border-t-transparent rounded-full animate-spin" /></div>}>
+      <StarterDashboardInner />
+    </Suspense>
   );
 }
