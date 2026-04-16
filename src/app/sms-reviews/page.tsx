@@ -256,6 +256,7 @@ function StickyFeaturesSection() {
           <div className="hidden lg:block">
             <div className="sticky top-24 py-16">
               <div className="rounded-2xl overflow-hidden border border-stone-200 shadow-[0_16px_60px_rgba(0,0,0,.1)] bg-stone-50" style={{aspectRatio: "2546/1535"}}>
+                {/* TODO: Replace with demo video when ready */}
                 <img
                   src="https://res.cloudinary.com/ddwysmpli/image/upload/q_auto/f_auto/v1776229887/Screenshot_2026-04-15_at_2.56.30_pm_lkvai3.png"
                   alt="Revuera SMS dashboard"
