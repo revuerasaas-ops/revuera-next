@@ -64,10 +64,15 @@ export function StarterWizard({
   async function selectPlace(placeId: string, name: string) {
     const link = getReviewLink(placeId);
     setReviewLink(link); setSelectedName(name);
-    if (!user?.id) { toast("Not logged in — please refresh", "error"); return; }
+    // Use user.id from context OR fall back to localStorage (handles hydration race)
+    const userId = user?.id || (() => { try { return JSON.parse(localStorage.getItem("rv_company") || "{}").id || ""; } catch { return ""; } })();
+    if (!userId) {
+      toast("Session error — please refresh the page", "error");
+      return;
+    }
     setSaving(true);
     try {
-      await companyApi.updateReviewLink(user.id, link);
+      await companyApi.updateReviewLink(userId, link);
       updateUser({ googleReviewLink: link });
       setStep(2);
     } catch (err) {

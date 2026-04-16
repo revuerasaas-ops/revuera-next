@@ -85,7 +85,8 @@ function EcommerceDashboardInner() {
             // Final attempt failed — if we have a cached subscription in localStorage, use it
             const cachedStatus = user?.subscriptionStatus;
             if (cachedStatus === "active" || cachedStatus === "trialing") {
-              // Trust the cached status — show dashboard with what we know
+              setAccessChecked(true);
+            } else if (isPostCheckout) {
               setAccessChecked(true);
             } else {
               router.push("/pricing");

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -35,6 +36,7 @@ export default function PricingContent() {
   const searchParams = useSearchParams();
   const highlightPlan = searchParams.get("plan");
   const { isAuthenticated } = useAuth();
+  const router = useRouter();
   const [annual, setAnnual] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
@@ -46,7 +48,10 @@ export default function PricingContent() {
   }, [highlightPlan]);
 
   async function handleCheckout(planName: string) {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) {
+      router.push(`/signup?plan=${planName.toLowerCase()}`);
+      return;
+    }
     setLoadingPlan(planName);
     try {
       const billingType = annual ? "annual" : "monthly";

@@ -45,6 +45,7 @@ export default function SignupForm() {
           localStorage.setItem("rv_session", data.sessionToken);
         }
         if (data.companyId) setSignupCompanyId(data.companyId);
+        if (data.shortcode) localStorage.setItem("rv_shortcode", data.shortcode);
         setStep("verify");
       }
     } catch (err) { setError(err instanceof ApiError ? err.message : "Connection error."); }
@@ -58,8 +59,9 @@ export default function SignupForm() {
     try {
       const data = await authApi.verifyEmail(code);
       if (data.success) {
-        // NOW properly log the user into AuthContext so pricing page sees them
+        // Log user into AuthContext
         const token = localStorage.getItem("rv_session") || "";
+        const shortcode = localStorage.getItem("rv_shortcode") || "";
         login(token, {
           id: signupCompanyId,
           name: name,
@@ -68,16 +70,24 @@ export default function SignupForm() {
           plan: preselectedPlan || "None",
           subscriptionStatus: "none",
           googleReviewLink: "",
-          shortcode: "",
-          contactLimit: 0,
+          shortcode: shortcode,
+          contactLimit: 300,
           contactsUsed: 0,
           trialEnd: "",
           verified: true,
         });
-        
-        // Route to pricing for plan selection
+
+        // If plan was preselected, go directly to checkout — skip pricing page
         if (preselectedPlan) {
-          router.push(`/pricing?plan=${preselectedPlan}`);
+          try {
+            const { subscription: subApi } = await import("@/lib/api/client");
+            const planCapitalized = preselectedPlan.charAt(0).toUpperCase() + preselectedPlan.slice(1);
+            const checkout = await subApi.createCheckout(planCapitalized, "monthly");
+            if (checkout.url) { window.location.href = checkout.url; return; }
+          } catch {
+            // fallback to pricing page if checkout fails
+            router.push(`/pricing?plan=${preselectedPlan}`);
+          }
         } else {
           setStep("quiz");
         }
@@ -137,10 +147,16 @@ export default function SignupForm() {
                 <p className="mt-2 text-body-sm text-stone-500">How do you interact with your customers?</p>
               </div>
               <div className="space-y-3">
-                <button onClick={()=>router.push("/pricing?plan=starter")} className="w-full text-left p-5 rounded-2xl border-2 border-stone-200 hover:border-brand-400 hover:bg-brand-50/30 transition-all group">
+                <button onClick={async()=>{
+                  try{const {subscription:s}=await import("@/lib/api/client");const c=await s.createCheckout("Starter","monthly");if(c.url){window.location.href=c.url;return;}}catch{}
+                  router.push("/pricing?plan=starter");
+                }} className="w-full text-left p-5 rounded-2xl border-2 border-stone-200 hover:border-brand-400 hover:bg-brand-50/30 transition-all group">
                   <div className="flex items-start gap-4"><div className="w-11 h-11 rounded-xl bg-brand-50 flex items-center justify-center shrink-0 group-hover:bg-brand-100 transition-colors"><MessageSquare className="h-5 w-5 text-brand-600"/></div><div><h3 className="text-heading-sm text-stone-900">I see customers in person</h3><p className="mt-1 text-body-sm text-stone-500">Service businesses, clinics, trades, salons</p><span className="mt-2 inline-block text-caption font-semibold text-brand-600">Starter — SMS Reviews</span></div></div>
                 </button>
-                <button onClick={()=>router.push("/pricing?plan=ecommerce")} className="w-full text-left p-5 rounded-2xl border-2 border-stone-200 hover:border-amber-400 hover:bg-amber-50/30 transition-all group">
+                <button onClick={async()=>{
+                  try{const {subscription:s}=await import("@/lib/api/client");const c=await s.createCheckout("Ecommerce","monthly");if(c.url){window.location.href=c.url;return;}}catch{}
+                  router.push("/pricing?plan=ecommerce");
+                }} className="w-full text-left p-5 rounded-2xl border-2 border-stone-200 hover:border-amber-400 hover:bg-amber-50/30 transition-all group">
                   <div className="flex items-start gap-4"><div className="w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center shrink-0 group-hover:bg-amber-100 transition-colors"><ShoppingCart className="h-5 w-5 text-amber-600"/></div><div><h3 className="text-heading-sm text-stone-900">I sell products online</h3><p className="mt-1 text-body-sm text-stone-500">Shopify, WooCommerce, BigCommerce</p><span className="mt-2 inline-block text-caption font-semibold text-amber-600">Ecommerce — Review Funnel</span></div></div>
                 </button>
               </div>

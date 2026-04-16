@@ -91,7 +91,7 @@ export const auth = {
 
   // Worker expects: { company, email, phone, password, country?, authProvider? }
   createAccount: (data: { company: string; email: string; phone: string; password: string; plan?: string }) =>
-    apiFetch<{ success: boolean; companyId: string; sessionToken: string; verificationRequired: boolean }>(
+    apiFetch<{ success: boolean; companyId: string; sessionToken: string; shortcode?: string; verificationRequired: boolean }>(
       "/api/signup/create",
       { method: "POST", body: data }
     ),

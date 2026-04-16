@@ -41,10 +41,11 @@ export function EcomWizard({
   async function selectPlace(placeId: string, name: string) {
     const link = getReviewLink(placeId);
     setSelectedName(name);
-    if (!user?.id) return;
+    const userId = user?.id || (() => { try { return JSON.parse(localStorage.getItem("rv_company") || "{}").id || ""; } catch { return ""; } })();
+    if (!userId) { toast("Session error — please refresh the page", "error"); return; }
     setSaving(true);
     try {
-      await companyApi.updateReviewLink(user.id, link);
+      await companyApi.updateReviewLink(userId, link);
       updateUser({ googleReviewLink: link });
       setStep(2);
     } catch (err) { toast(err instanceof ApiError ? err.message : "Failed", "error"); }
