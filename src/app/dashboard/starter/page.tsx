@@ -113,6 +113,13 @@ function StarterDashboardInner() {
     if (accessChecked && user?.id && !showWizard && !showWelcome) loadCustomers();
   }, [accessChecked, user?.id, loadCustomers, showWizard, showWelcome]);
 
+  // Auto-refresh every 30s to pick up SMS replies and rating updates
+  useEffect(() => {
+    if (!accessChecked || !user?.id || showWizard || showWelcome) return;
+    const interval = setInterval(() => loadCustomers(), 30000);
+    return () => clearInterval(interval);
+  }, [accessChecked, user?.id, loadCustomers, showWizard, showWelcome]);
+
   // Loading state
   if (authLoading || !accessChecked) {
     return (

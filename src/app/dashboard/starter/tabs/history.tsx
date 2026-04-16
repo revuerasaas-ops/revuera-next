@@ -100,7 +100,8 @@ export function HistoryTab({ customers, loading, onRefresh }: Props) {
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden">
-          <div className="overflow-x-auto">
+          {/* Desktop table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-stone-100 bg-stone-50/50">
@@ -127,9 +128,7 @@ export function HistoryTab({ customers, loading, onRefresh }: Props) {
                               <span key={i} className={`text-sm ${i < rating ? "text-amber-400" : "text-stone-200"}`}>★</span>
                             ))}
                           </span>
-                        ) : (
-                          <span className="text-caption text-stone-300">—</span>
-                        )}
+                        ) : <span className="text-caption text-stone-300">—</span>}
                       </td>
                       <td className="px-5 py-3.5 text-caption text-stone-400">{fmtDate(r.createdTime)}</td>
                     </tr>
@@ -137,6 +136,29 @@ export function HistoryTab({ customers, loading, onRefresh }: Props) {
                 })}
               </tbody>
             </table>
+          </div>
+          {/* Mobile cards */}
+          <div className="md:hidden divide-y divide-stone-100">
+            {filtered.map((r) => {
+              const f = r.fields;
+              const rating = Number(f["Rating"]);
+              return (
+                <div key={r.id} className="px-4 py-4 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-body-sm font-semibold text-stone-900 truncate">{String(f["Customer Name"] || "—")}</p>
+                    <p className="text-caption text-stone-400 mt-0.5">{String(f["Customer Phone"] || "—")} · {fmtDate(r.createdTime)}</p>
+                    {rating > 0 && (
+                      <div className="flex gap-0.5 mt-1">
+                        {[...Array(5)].map((_, i) => (
+                          <span key={i} className={`text-xs ${i < rating ? "text-amber-400" : "text-stone-200"}`}>★</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <StatusBadge status={String(f["SMS Status"] || "")} />
+                </div>
+              );
+            })}
           </div>
           <div className="px-5 py-3 border-t border-stone-100 bg-stone-50/30">
             <p className="text-caption text-stone-400">{filtered.length} of {customers.length} customers</p>

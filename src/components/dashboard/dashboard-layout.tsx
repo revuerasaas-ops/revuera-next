@@ -200,8 +200,8 @@ export function DashboardLayout({
           </Link>
         </header>
 
-        {/* Content */}
-        <main className="flex-1 p-4 lg:p-8 overflow-y-auto">
+        {/* Content — add bottom padding on mobile to clear the bottom nav */}
+        <main className="flex-1 p-4 pb-24 lg:pb-8 lg:p-8 overflow-y-auto">
           {trialBanner}
           <AnimatePresence mode="wait">
             <motion.div
@@ -216,6 +216,24 @@ export function DashboardLayout({
           </AnimatePresence>
         </main>
       </div>
+
+      {/* Mobile bottom navigation bar */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-stone-200 flex items-stretch safe-bottom">
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => { onTabChange(tab.id); setSidebarOpen(false); }}
+              className={`flex-1 flex flex-col items-center justify-center gap-1 py-2.5 text-[10px] font-semibold transition-colors ${ isActive ? "text-brand-600" : "text-stone-400"}`}
+            >
+              <tab.icon className={`h-5 w-5 ${ isActive ? "text-brand-600" : "text-stone-400"}`} />
+              {tab.label}
+              {isActive && <span className="absolute bottom-0 left-[10%] right-[10%] h-0.5 bg-brand-600 rounded-t-full" />}
+            </button>
+          );
+        })}
+      </nav>
     </div>
   );
 }

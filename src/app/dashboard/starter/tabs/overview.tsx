@@ -152,9 +152,9 @@ export function OverviewTab({ customers, loading, onRefresh, onAddCustomer }: Pr
         <h3 className="text-heading-sm text-stone-900 mb-1">Send a Review Request</h3>
         <p className="text-body-sm text-stone-500 mb-4">Add a customer and we&apos;ll send them an SMS asking for a review.</p>
         <form onSubmit={handleAdd} className="grid sm:grid-cols-[1fr_1fr_auto] gap-3 items-end">
-          <div><label className="text-body-sm font-medium text-stone-700 block mb-1.5">Customer Name</label><Input value={addName} onChange={(e) => setAddName(e.target.value)} placeholder="Jane Smith" className="h-10" /></div>
-          <div><label className="text-body-sm font-medium text-stone-700 block mb-1.5">Phone Number</label><Input value={addPhone} onChange={(e) => setAddPhone(e.target.value)} placeholder="04XX XXX XXX" type="tel" className="h-10" /></div>
-          <Button type="submit" disabled={adding} className="bg-brand-600 hover:bg-brand-700 h-10 px-5">
+          <div><label className="text-body-sm font-medium text-stone-700 block mb-1.5">Customer Name</label><Input value={addName} onChange={(e) => setAddName(e.target.value)} placeholder="Jane Smith" className="h-11 text-base" autoComplete="name" /></div>
+          <div><label className="text-body-sm font-medium text-stone-700 block mb-1.5">Phone Number</label><Input value={addPhone} onChange={(e) => setAddPhone(e.target.value)} placeholder="04XX XXX XXX" type="tel" className="h-11 text-base" autoComplete="tel" inputMode="tel" /></div>
+          <Button type="submit" disabled={adding} className="bg-brand-600 hover:bg-brand-700 h-11 px-5 w-full sm:w-auto text-base">
             {adding ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Send className="h-4 w-4 mr-1.5" />Send</>}
           </Button>
         </form>

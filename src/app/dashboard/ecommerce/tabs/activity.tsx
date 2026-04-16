@@ -61,7 +61,8 @@ export function ActivityTab({ orders, loading, onRefresh }: Props) {
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden">
-          <div className="overflow-x-auto">
+          {/* Desktop table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full">
               <thead><tr className="border-b border-stone-100 bg-stone-50/50">
                 <th className="text-left px-5 py-3 text-caption font-semibold text-stone-500 uppercase tracking-wider">Customer</th>
@@ -80,6 +81,18 @@ export function ActivityTab({ orders, loading, onRefresh }: Props) {
                 ))}
               </tbody>
             </table>
+          </div>
+          {/* Mobile cards */}
+          <div className="md:hidden divide-y divide-stone-100">
+            {filtered.map((o, i) => (
+              <div key={i} className="px-4 py-3.5 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-body-sm font-semibold text-stone-900 truncate">{String(o.name || o.customer_name || "—")}</p>
+                  <p className="text-caption text-stone-400 mt-0.5">{String(o.source || "—")} · {fmtDate(o.created || o.created_at)}</p>
+                </div>
+                <StatusBadge status={String(o.status || o.sms_status || "Queued")} />
+              </div>
+            ))}
           </div>
           <div className="px-5 py-3 border-t border-stone-100 bg-stone-50/30">
             <p className="text-caption text-stone-400">{filtered.length} orders</p>

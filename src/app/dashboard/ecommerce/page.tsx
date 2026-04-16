@@ -113,6 +113,13 @@ function EcommerceDashboardInner() {
 
   useEffect(() => { if (accessChecked && user?.id && !showWizard && !showWelcome) loadData(); }, [accessChecked, user?.id, loadData, showWizard, showWelcome]);
 
+  // Auto-refresh every 60s for ecommerce stats
+  useEffect(() => {
+    if (!accessChecked || !user?.id || showWizard || showWelcome) return;
+    const interval = setInterval(() => loadData(), 60000);
+    return () => clearInterval(interval);
+  }, [accessChecked, user?.id, loadData, showWizard, showWelcome]);
+
   if (authLoading || !accessChecked) {
     return (
       <div className="min-h-screen bg-sand flex items-center justify-center">
